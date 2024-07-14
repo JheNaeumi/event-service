@@ -13,6 +13,9 @@ Route::get('/', function () {
         'phpVersion' => PHP_VERSION,
     ]);
 });
+Route::get('/events', function () {
+    return Inertia::render('Events');
+})->middleware(['auth', 'verified'])->name('events');
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
