@@ -4,16 +4,6 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
-use App\Http\Controllers\EventController;
-
-Route::middleware(['auth'])->group(function () {
-    Route::resource('events', EventController::class);
-    Route::post('events/{event}/join', [EventController::class, 'join'])->name('events.join');
-});
-
-Route::get('events', [EventController::class, 'index'])->name('events.index');
-Route::get('events/{event}', [EventController::class, 'show'])->name('events.show');
-
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
