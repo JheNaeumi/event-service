@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\EventController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -13,9 +14,14 @@ Route::get('/', function () {
         'phpVersion' => PHP_VERSION,
     ]);
 });
-Route::get('/events', function () {
-    return Inertia::render('Events');
-})->middleware(['auth', 'verified'])->name('events');
+
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/events', [EventController::class, 'index'])->name('events');
+    Route::post('/events', [EventController::class, 'store'])->name('events.store');
+    Route::get('/events/{event}', [EventController::class, 'show'])->name('events.show');
+    Route::put('/events/{event}', [EventController::class, 'update'])->name('events.update');
+    Route::delete('/events/{event}', [EventController::class, 'destroy'])->name('events.destroy');
+});
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
