@@ -1,77 +1,38 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Models\Event;
 use Illuminate\Http\Request;
+use Inertia\Response;
 
 class EventController extends Controller
 {
-    public function index()
+    public function index(): Response
     {
-        $events = Event::orderBy('event_date', 'desc')->paginate();
-        return inertia('Event/Index', ['events' => $events]);
-    }
-
-    public function create()
-    {
-        return inertia('Event/Create');
+        $events = Event::all();
+        return inertia('Events', ['events' => $events]);
     }
 
     public function store(Request $request)
     {
-        $data = $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'event_date' => 'required|date',
-        ]);
-        $data['user_id'] = $request->user()->id;
-        $event = Event::create($data);
-
-        // Send initial email notification
-        // Notification logic here
-
-        return redirect()->route('events.show', $event)->with('message', 'Event created successfully.');
+        $event = Event::create($request->all());
+        return redirect()->route('events');
     }
 
-    public function show(Event $event)
+    public function show(Event $event): Response
     {
-        return inertia('Event/Show', ['event' => $event]);
-    }
-
-    public function edit(Event $event)
-    {
-        return inertia('Event/Edit', ['event' => $event]);
+        return inertia('Events', ['event' => $event]);
     }
 
     public function update(Request $request, Event $event)
     {
-        $data = $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'event_date' => 'required|date',
-        ]);
-
-        $event->update($data);
-
-        // Send update email notification
-        // Notification logic here
-
-        return redirect()->route('events.show', $event)->with('message', 'Event updated successfully.');
+        $event->update($request->all());
+        return redirect()->route('events');
     }
 
     public function destroy(Event $event)
     {
         $event->delete();
-        return redirect()->route('events.index')->with('message', 'Event deleted successfully.');
-    }
-
-    public function join(Event $event)
-    {
-        $user = auth()->user();
-        // Attach the user to the event (many-to-many relationship or custom logic)
-        // Notification logic here
-
-        return redirect()->route('events.show', $event)->with('message', 'You have joined the event.');
+        return redirect()->route('events');
     }
 }
