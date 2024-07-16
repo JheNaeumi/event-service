@@ -1,7 +1,7 @@
-
 import React, { useState } from 'react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, useForm } from '@inertiajs/react';
+
 
 export default function Event({ auth, events }) {
     const { data, setData, post, processing, errors } = useForm({
@@ -18,9 +18,13 @@ export default function Event({ auth, events }) {
         e.preventDefault();
         post(route('events.store'), {
             onSuccess: () => {
-                setData({ name: '', description: '', event_date: '' });
+                setData({ name: '', description: '', event_date: '', });
             },
         });
+    };
+
+    const handleJoin = (id) => {
+       post(route('events.join', id));
     };
 
     const handleDelete = (id) => {
@@ -45,7 +49,18 @@ export default function Event({ auth, events }) {
                                             <div className="font-bold">{event.name}</div>
                                             <div>{event.description}</div>
                                             <div>{new Date(event.event_date).toLocaleString()}</div>
-                                            <button onClick={() => handleDelete(event.id)} className="bg-red-500 text-white px-4 py-2 rounded mt-2">Delete</button>
+        
+                                            {auth.user && (
+                                                <button onClick={() => handleJoin(event.id)} className="bg-green-500 text-white px-4 py-2 rounded mt-2">Join</button>
+                                            )}
+                                            {auth.user && auth.user.id === event.user_id && (
+                                                <>
+                                                    <button onClick={() => handleDelete(event.id)} className="bg-red-500 text-white px-4 py-2 rounded mt-2 ml-4">Delete</button>
+                                                    {/* Add an update button and form if needed */}
+                                                </>
+                                            )}
+                                        
+
                                         </li>
                                     ))}
                                 </ul>
@@ -54,17 +69,17 @@ export default function Event({ auth, events }) {
                                 <form onSubmit={handleSubmit}>
                                     <div className="mt-4">
                                         <label className="block text-gray-700">Name</label>
-                                        <input type="text" name="name" value={data.name} onChange={handleChange} className="mt-1 block w-full text-gray-500" required />
+                                        <input type="text" name="name" value={data.name} onChange={handleChange} className="mt-1 block w-full text-gray-600" required />
                                         {errors.name && <div className="text-red-500 mt-2">{errors.name}</div>}
                                     </div>
                                     <div className="mt-4">
                                         <label className="block text-gray-700">Description</label>
-                                        <textarea name="description" value={data.description} onChange={handleChange} className="mt-1 block w-full  text-gray-500" required />
+                                        <textarea name="description" value={data.description} onChange={handleChange} className="mt-1 block w-full  text-gray-600" required />
                                         {errors.description && <div className="text-red-500 mt-2">{errors.description}</div>}
                                     </div>
                                     <div className="mt-4">
                                         <label className="block text-gray-700">Event Date</label>
-                                        <input type="datetime-local" name="event_date" value={data.event_date} onChange={handleChange} className="mt-1 block w-full text-gray-500" required />
+                                        <input type="datetime-local" name="event_date" value={data.event_date} onChange={handleChange} className="mt-1 block w-full  text-gray-600" required />
                                         {errors.event_date && <div className="text-red-500 mt-2">{errors.event_date}</div>}
                                     </div>
                                     <div className="mt-4">
