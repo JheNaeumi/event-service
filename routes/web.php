@@ -21,6 +21,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/events/{event}', [EventController::class, 'show'])->name('events.show');
     Route::put('/events/{event}', [EventController::class, 'update'])->name('events.update');
     Route::delete('/events/{event}', [EventController::class, 'destroy'])->name('events.destroy');
+    Route::post('/events/{event}/join', [EventController::class, 'join'])->name('events.join');
+
 });
 
 Route::get('/dashboard', function () {
