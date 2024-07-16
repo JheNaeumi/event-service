@@ -15,7 +15,19 @@ class EventController extends Controller
 
     public function store(Request $request)
     {
-        $event = Event::create($request->all());
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'required|string',
+            'event_date' => 'required|date',
+        ]);
+    
+        Event::create([
+            'name' => $request->name,
+            'description' => $request->description,
+            'event_date' => $request->event_date,
+            'user_id' => auth()->id(), // Assign the authenticated user
+        ]);
+    
         return redirect()->route('events');
     }
 
@@ -26,13 +38,36 @@ class EventController extends Controller
 
     public function update(Request $request, Event $event)
     {
+        if ($event->user_id !== auth()->id()) {
+            abort(403);
+        }
+    
         $event->update($request->all());
         return redirect()->route('events');
     }
-
+    
     public function destroy(Event $event)
     {
+        if ($event->user_id !== auth()->id()) {
+            abort(403);
+        }
+    
         $event->delete();
         return redirect()->route('events');
     }
+    
+
+    public function join(Event $event)
+    {
+        if (auth()->user()) {
+            $event->users()->attach(auth()->id());
+            return redirect()->route('events');
+        }
+
+        return redirect()->route('login');
+    }
+
+   
+
+
 }
