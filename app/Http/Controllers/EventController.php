@@ -2,19 +2,24 @@
 namespace App\Http\Controllers;
 
 use App\Models\Event;
-use App\Notifications\EventReminder;
+use App\Notifications\EventJoinedNotification;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Inertia\Response;
+use Inertia\Inertia;
+use Illuminate\Foundation\Application;
+use Illuminate\Support\Facades\Auth;
 
 class EventController extends Controller
 {
-    // public function index(): Response
-    // {
-    //     $events = Event::all();
-    //     return inertia('Events', ['events' => $events]);
-    // }
 
+    public function index()
+    {
+        $events = Event::with('users:id,name')->get();
+        return Inertia::render('Events', [
+            'events' => $events
+        ]);
+    }
+  
     public function store(Request $request)
     {
         $request->validate([
@@ -33,10 +38,10 @@ class EventController extends Controller
         return redirect()->route('events');
     }
 
-    // public function show(Event $event): Response
-    // {
-    //     return inertia('Events', ['event' => $event]);
-    // }
+    public function show(Event $event): Response
+    {
+        return Inertia::render('Events', ['event' => $event]);
+    }
 
     public function update(Request $request, Event $event)
     {
@@ -57,67 +62,48 @@ class EventController extends Controller
         $event->delete();
         return redirect()->route('events');
     }
-    
-
-    // public function join(Event $event)
-    // {
-    //     if (auth()->user()) {
-    //         $event->users()->attach(auth()->id());
-    //         return redirect()->route('events');
-    //     }
-
-    //     return redirect()->route('login');
-    // }
-
-    // public function join($id)
-    // {
-    //     $event = Event::findOrFail($id);
-    
-    //     if (!$event->users()->where('user_id', auth()->id())->exists()) {
-    //         $event->users()->attach(auth()->id());
-    //     }
-    
-    //     return redirect()->route('events.index');
-    // }
     public function join($id)
     {
-        $event = Event::findOrFail($id);
-
-        if (!$event->users()->where('user_id', auth()->id())->exists()) {
-            $event->users()->attach(auth()->id());
-            auth()->user()->notify(new EventReminder($event));
+        // Check if the user is authenticated
+        if (!Auth::check()) {
+            // If not authenticated, redirect to login page with a message
+            return redirect()->route('login')->with('message', 'Please log in to join an event.');
         }
 
-        return redirect()->route('events.index');
-    }
+        $event = Event::findOrFail($id);
 
-    public function show(Event $event)
-    {
-        $event->load('users');
-    
-        return inertia('Events', [
-            'event' => $event,
-        ]);
-    }
-    
-    public function index()
-    {
-        $events = Event::with('users')->get();
-        return inertia('Events', [
-            'auth' => Auth::user(),
-            'events' => $events,
-        ]);
+        // Check if the user has already joined the event
+        if ($event->users()->where('user_id', auth()->id())->exists()) {
+            // If already joined, redirect back with a message
+            return redirect()->back()->with('message', 'You have already joined this event.');
+        }
+
+        // If not joined, attach the user to the event
+        $event->users()->attach(auth()->id());
+        auth()->user()->notify(new EventJoinedNotification($event));
+
+        return redirect()->route('events')->with('message', 'You have successfully joined the event.');
     }
 
     public function dashboard()
     {
-        $events = Event::with('users')->where('user_id', auth()->id())->get();
-        return inertia('Dashboard', [
-            'auth' => Auth::user(),
-            'events' => $events,
+        $events = Event::where('user_id', auth()->id())
+            ->with('users:id,name')
+            ->get();
+        
+        return Inertia::render('Dashboard', [
+            'events' => $events
         ]);
     }
-
-
+    
+    public function welcome()
+    {
+        $events = Event::with('users')->get();
+        return Inertia::render('Welcome', [
+            'events' => $events,
+            'laravelVersion' => Application::VERSION,
+            'phpVersion' => PHP_VERSION,
+        ]);
+    }
 
 }
