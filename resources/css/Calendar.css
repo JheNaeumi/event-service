@@ -4,21 +4,15 @@ body {
 }
 
 body {
-
+  background-color: #1f2937;
   margin: 0;
   font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
 
-.Sample input,
-.Sample button {
-  font: inherit;
-}
-
 .Sample header {
-  background-color: #323639;
   box-shadow: 0 0 8px rgba(0, 0, 0, 0.5);
   padding: 20px;
-  color: white;
+  background-color: #20242b;
 }
 
 .Sample header h1 {
@@ -31,10 +25,10 @@ body {
   flex-direction: row;
   flex-wrap: wrap;
   align-items: flex-start;
-  margin: 10px 0;
-  padding: 10px;
   background-color: #1f2937;
+
 }
+
 
 .Sample__container > * > * {
   margin: 10px;
@@ -48,7 +42,10 @@ body {
   flex-grow: 100;
   align-items: stretch;
   padding-top: 1em;
+  background-color: #1f2937;
+  
 }
+
 
 .Sample__container__content .react-calendar{
   margin: 0 auto;
@@ -57,4 +54,61 @@ body {
   font-style: normal;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   
+}
+
+.Sample__container__content .react-calendar button{
+  border-radius: 5px;
+  border: 0;
+  color: white;
+  padding: 2px 0;
+  &:hover {
+    background-color: #1d1f22;
+  }
+ 
+}
+  .react-calendar__month-view__days__day--neighboringMonth {
+    opacity: 0.4;
+  }
+
+ .react-calendar__navigation {
+  background-color: #20242b;
+  .react-calendar__navigation__label{
+    font-weight: bold;
+    font-size: large;
+  }
+  .react-calendar__navigation__arrow {
+    flex-grow: 0.333;
+    
+  }
+  .react-calendar__navigation__arrow__button {
+    flex-grow: 0.333;
+    &:hover {
+      background-color: #20242b;
+    }
+    &:active{
+      background-color: #20242b;
+    }
+    
+  }
+  .react-calendar__navigation__button{
+    background-color: #20242b;
+    &:hover {
+      background-color: #20242b;
+    }
+    &:active{
+      background-color: #20242b;
+    }
+  }
+  
+  
+}
+button {
+  border-radius: 3px;
+  padding: 5px 0;
+  &:hover {
+    background-color: #20242b;
+  }
+  &:active{
+    background-color: #20242b;
+  }
 }
