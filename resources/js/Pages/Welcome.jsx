@@ -1,8 +1,7 @@
 import { Link, Head, useForm } from '@inertiajs/react';
 import { useState } from 'react';
 import Calendar from 'react-calendar';
-import '../../css/Sample.css';
-import 'react-calendar/dist/Calendar.css';
+import '../../css/Calendar.css';
 export default function Welcome({ auth, laravelVersion, phpVersion, events }) {
     // ... (keep existing state and functions)
     const { post, processing } = useForm();
@@ -170,9 +169,9 @@ export default function Welcome({ auth, laravelVersion, phpVersion, events }) {
                                         <h3 className="text-lg font-medium mb-4">Calendar</h3>
                                         {/* Placeholder for calendar component */}
                                         <div className="Sample__container">
-                                            <main className="Sample__container__content">
+                                            <div className="Sample__container__content">
                                             <Calendar onChange={onChange} next2Label={null} prev2Label={null} shoview="month" value={value} />
-                                            </main>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

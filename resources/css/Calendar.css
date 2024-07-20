@@ -4,15 +4,14 @@ body {
 }
 
 body {
-  background-color: #1f2937;
   margin: 0;
   font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  
 }
 
 .Sample header {
   box-shadow: 0 0 8px rgba(0, 0, 0, 0.5);
   padding: 20px;
-  background-color: #20242b;
 }
 
 .Sample header h1 {
@@ -26,6 +25,7 @@ body {
   flex-wrap: wrap;
   align-items: flex-start;
   background-color: #1f2937;
+  text-align: center;
 
 }
 
@@ -41,18 +41,17 @@ body {
   flex-direction: column;
   flex-grow: 100;
   align-items: stretch;
-  padding-top: 1em;
-  background-color: #1f2937;
+  padding-top: 1em; 
   
 }
 
 
 .Sample__container__content .react-calendar{
   margin: 0 auto;
-  background-color: #1f2937;
   border: 0;
   font-style: normal;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  text-align: center;
   
 }
 
@@ -71,44 +70,34 @@ body {
   }
 
  .react-calendar__navigation {
-  background-color: #20242b;
+  text-align: center;
+
   .react-calendar__navigation__label{
     font-weight: bold;
     font-size: large;
+    margin-left: 20px;
+    margin-right: 20px;
+    
   }
   .react-calendar__navigation__arrow {
     flex-grow: 0.333;
-    
+    width: 40px;
+    height: 40px;
   }
-  .react-calendar__navigation__arrow__button {
-    flex-grow: 0.333;
-    &:hover {
-      background-color: #20242b;
-    }
-    &:active{
-      background-color: #20242b;
-    }
-    
-  }
-  .react-calendar__navigation__button{
-    background-color: #20242b;
-    &:hover {
-      background-color: #20242b;
-    }
-    &:active{
-      background-color: #20242b;
-    }
-  }
-  
-  
+ 
 }
-button {
-  border-radius: 3px;
-  padding: 5px 0;
-  &:hover {
-    background-color: #20242b;
+  button {
+    border-radius: 3px;
+    padding: 5px 0;
+    
+    &:hover {
+      background-color: #20242b;
+    }
+    &:active{
+      background-color: blue;
+    }
   }
-  &:active{
-    background-color: #20242b;
-  }
+
+  .react-calendar__tile--range {
+    box-shadow: 0 0 6px 2px black;
 }
