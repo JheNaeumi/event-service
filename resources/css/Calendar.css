@@ -71,12 +71,11 @@ body {
 
  .react-calendar__navigation {
   text-align: center;
-
+  justify-content: flex-start;
   .react-calendar__navigation__label{
     font-weight: bold;
-    font-size: large;
-    margin-left: 20px;
-    margin-right: 20px;
+    margin-left: 5px;
+    margin-right: 5px;
     
   }
   .react-calendar__navigation__arrow {
