@@ -17,7 +17,13 @@ export default function Welcome({ auth, laravelVersion, phpVersion, events }) {
             preserveScroll: true,
         });
     };
-
+    const formatShortWeekday = (locale, date) => {
+        if (!date) {
+          return '';
+        }
+        const weekdays = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
+        return weekdays[date.getDay()];
+      };
     const toggleEventDetails = (eventId) => {
         setExpandedEvent(expandedEvent === eventId ? null : eventId);
     };
@@ -170,7 +176,7 @@ export default function Welcome({ auth, laravelVersion, phpVersion, events }) {
                                         {/* Placeholder for calendar component */}
                                         <div className="Sample__container">
                                             <div className="Sample__container__content">
-                                            <Calendar onChange={onChange} next2Label={null} prev2Label={null} shoview="month" value={value} />
+                                            <Calendar onChange={onChange} next2Label={null} prev2Label={null} shoview="month" calendarType='gregory' value={value} formatShortWeekday={formatShortWeekday}/>
                                             </div>
                                         </div>
                                     </div>
