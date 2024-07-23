@@ -14,7 +14,7 @@ class EventController extends Controller
 
     public function index()
     {
-        $events = Event::with('users:id,name')->get();
+        $events = Event::with('users:id,name')->where('event_date', '>', now())->get();
         return Inertia::render('Events', [
             'events' => $events
         ]);
