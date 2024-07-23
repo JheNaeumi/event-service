@@ -98,7 +98,7 @@ class EventController extends Controller
     
     public function welcome()
     {
-        $events = Event::with('users')->get();
+        $events = Event::with('users')->where('event_date', '>', now())->get();
         return Inertia::render('Welcome', [
             'events' => $events,
             'laravelVersion' => Application::VERSION,
