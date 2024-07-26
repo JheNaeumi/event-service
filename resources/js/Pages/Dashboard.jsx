@@ -1,15 +1,18 @@
 
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head } from '@inertiajs/react';
+import { Head, useForm} from '@inertiajs/react';
 import { useState } from 'react';
 
 export default function Dashboard({ auth, events }) {
+    const { delete: destroy } = useForm()
     const [expandedEvent, setExpandedEvent] = useState(null);
 
     const toggleEventDetails = (eventId) => {
         setExpandedEvent(expandedEvent === eventId ? null : eventId);
     };
-    
+    const handleDelete = (id) => {
+        destroy(route('events.destroy', id));
+    };
     const upcomingEvents = events
     .filter(event => new Date(event.event_date) >= new Date()) // Filter out past events
     .sort((a, b) => new Date(a.event_date) - new Date(b.event_date)) // Sort by date
@@ -66,9 +69,11 @@ export default function Dashboard({ auth, events }) {
                                             <div key={event.id} className="border rounded-lg p-4">
                                                 <div className="flex justify-between items-center cursor-pointer" onClick={() => toggleEventDetails(event.id)}>
                                                     <h4 className="text-xl font-semibold">{event.name}</h4>
+                                                 
                                                     <span className="text-sm bg-blue-500 text-white px-2 py-1 rounded">
                                                         {event.users.length} {event.users.length === 1 ? 'user' : 'users'} joined
                                                     </span>
+                                                   
                                                 </div>
                                                 {expandedEvent === event.id && (
                                                     <div className="mt-4">
@@ -81,6 +86,9 @@ export default function Dashboard({ auth, events }) {
                                                                     <li key={user.id}>{user.name}</li>
                                                                 ))}
                                                             </ul>
+                                                        )}
+                                                        {auth.user && auth.user.id === event.user_id && (
+                                                            <button onClick={() => handleDelete(event.id)} className="bg-red-500 text-white px-4 py-2 rounded mt-4">Delete</button>
                                                         )}
                                                     </div>
                                                 )}
